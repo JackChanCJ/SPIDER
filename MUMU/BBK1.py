@@ -1,6 +1,5 @@
 # coding=utf-8
 __author__ = 'JACK_CHAN'
-
 import urllib.request
 import urllib.response
 import urllib.parse
@@ -60,8 +59,7 @@ data = data.encode('utf-8')
 req = urllib.request.urlopen(post, data)
 bbk = req.read().decode('utf-8')
 batchID = re.findall('permaSerial="(.*?)"', bbk)
-print (len(batchID))
-print (batchID)
+print ('取出来的长度:', len(batchID))
 
 
 """
@@ -71,5 +69,6 @@ http://yyyyy330.blog.163.com/blog/static/134612310201612375310693/
 """
 new_batch = []
 [new_batch.append(i) for i in batchID if not i in new_batch]
-print (len(new_batch))
+print ('处理之后的长度：', len(new_batch))
+print (new_batch)
 
