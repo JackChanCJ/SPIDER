@@ -5,19 +5,6 @@ import urllib.response
 import urllib.parse
 import re
 
-# # 向服务器发送一个get请求
-# url = 'http://yyyyy330.blog.163.com/blog/#m=0'
-# # 创建一个请求
-# r = urllib.request.Request(url)
-# r.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36')
-# req = urllib.request.urlopen(url)
-# print (req.status)
-# b = req.read()
-# BBK = b.decode('gbk')
-# print (BBK)
-# # print (re.findall('title="阅读全文" target="_blank" href=(.*?)/">', BBK))
-
-
 """
 http://api.blog.163.com/yyyyy330/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr
 Request Method:POST
@@ -30,48 +17,48 @@ c0-param2 ：一次返回博客的数量，最大值好像是500，具体多少�
 如果一个博主写了超过500篇博客，那就可以分多次请求，只要合理设置c0-param1和c0-param2就可以。
 
 """
-username = 'yyyyy330'
-userID = '134612310'
-url = 'http://api.blog.163.com/' + username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
-
-post = urllib.request.Request(url)
-post.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36')
-post.add_header('Content-Type', 'text/plain')
-post.add_header('Referer', 'http://api.blog.163.com/crossdomain.html?t=20100205')
-
-paraDict = {
-    'callCount'      :   '1',
-    'scriptSessionId':   '${scriptSessionId}187',
-    'c0-scriptName'  :   'BlogBeanNew',
-    'c0-methodName'  :   'getBlogs',
-    'c0-id'          :   '0',
-    'c0-param0'      :   '134612310',
-    'c0-param1'      :   '0',
-    'c0-param2'      :   '20',
-    'batchId'        :   '1'
-}
-
-paraDict['c0-param0'] = "number:" + userID
-paraDict['c0-param1'] = "number:" + str(0)
-paraDict['c0-param2'] = "number:" + str(500)
-data = urllib.parse.urlencode(paraDict)
-data = data.encode('utf-8')
-req = urllib.request.urlopen(post, data)
-bbk = req.read().decode('utf-8')
-batchID = re.findall('permaSerial="(.*?)"', bbk)
-print ('取出来的长度:', len(batchID))
 
 
-"""
-拼接链接,循环访问并取出标题即文本
-http://yyyyy330.blog.163.com/blog/static/134612310201612375310693/
-'http://' + username + '.blog.163.com/blog/static/' + batchID
-"""
-new_batch = []
-[new_batch.append(i) for i in batchID if not i in new_batch]
-print ('处理之后的长度：', len(new_batch))
-print (new_batch)
+def get_blog_id(username, userID):
+    url = 'http://api.blog.163.com/' + username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
+
+    post = urllib.request.Request(url)
+    post.add_header('User-Agent',
+                    'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36')
+    post.add_header('Content-Type', 'text/plain')
+    post.add_header('Referer', 'http://api.blog.163.com/crossdomain.html?t=20100205')
+    paraDict = {
+        'callCount': '1',
+        'scriptSessionId': '${scriptSessionId}187',
+        'c0-scriptName': 'BlogBeanNew',
+        'c0-methodName': 'getBlogs',
+        'c0-id': '0',
+        'c0-param0': '134612310',
+        'c0-param1': '0',
+        'c0-param2': '20',
+        'batchId': '1'
+    }
+
+    paraDict['c0-param0'] = "number:" + userID
+    paraDict['c0-param1'] = "number:" + str(0)
+    paraDict['c0-param2'] = "number:" + str(500)
+    data = urllib.parse.urlencode(paraDict)
+    data = data.encode('utf-8')
+    req = urllib.request.urlopen(post, data)
+    bbk = req.read().decode('utf-8')
+    batchID = re.findall('permaSerial="(.*?)"', bbk)
+    print('取出来的长度:', len(batchID))
+
+    """
+    拼接链接,循环访问并取出标题即文本
+    http://yyyyy330.blog.163.com/blog/static/134612310201612375310693/
+    'http://' + username + '.blog.163.com/blog/static/' + batchID
+    """
+    blog_id = []
+    [blog_id.append(i) for i in batchID if not i in blog_id]
+    print('处理之后的长度：', len(blog_id))
+    return blog_id
 
 
-
-
+if __name__ == '__main__':
+    get_blog_id('yyyyy330', '134612310')
