@@ -61,4 +61,4 @@ def get_blog_id(username, userID):
 
 
 if __name__ == '__main__':
-    get_blog_id('yyyyy330', '134612310')
+    print(get_blog_id('yyyyy330', '134612310'))
