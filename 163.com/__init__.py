@@ -3,6 +3,19 @@ __author__ = 'JACK_CHAN'
 import re
 import requests
 
+"""
+http://api.blog.163.com/yyyyy330/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr
+Request Method:POST
+Content-Type:text/plain
+
+设置参数，除了c0-param0、c0-param1和c0-param2外都一样。
+c0-param0 ：博主的userId，例如yyyyy330的userId是“134612310”
+c0-param1 ：返回博客数据的起始项，从0开始
+c0-param2 ：一次返回博客的数量，最大值好像是500，具体多少我没有完全去试，600肯定不行，我一般设置500，600以上就不返回数据了。
+如果一个博主写了超过500篇博客，那就可以分多次请求，只要合理设置c0-param1和c0-param2就可以。
+paradict['c0-param2']的值不能大于500，微博文章总量大于500的需要分多次获取
+
+"""
 
 class wangyiboke:
     def __init__(self, username, id):
@@ -38,16 +51,22 @@ class wangyiboke:
         bloghtml = blogpost.text
         return bloghtml
 
-    def re_blog_html(self, get_blog_html):
-        pass
+    # 使用正则表达式来处理bloghmtl
+    def re_blog_html(self):
+        batchID = re.findall('permaSerial="(.*?)"', self.get_blog_html())
+        L = []
+        [L.append(i) for i in batchID if i not in L]
+        return L
 
     def get_photo_html(self):
+
         return
 
 
 def main():
     B = wangyiboke('yyyyy330', '134612310')
-    B.get_blog_html()
+    B.re_blog_html()
+
     pass
 
 if __name__ == '__main__':
