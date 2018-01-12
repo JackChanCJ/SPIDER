@@ -38,7 +38,6 @@ def get_blog_id(username, userID):
         'c0-param2': '20',
         'batchId': '1'
     }
-
     paraDict['c0-param0'] = "number:" + userID
     paraDict['c0-param1'] = "number:" + str(0)
     paraDict['c0-param2'] = "number:" + str(500)
@@ -59,6 +58,9 @@ def get_blog_id(username, userID):
     print('处理之后的长度：', len(blog_id))
     return blog_id
 
+
+def main():
+    pass
 
 if __name__ == '__main__':
     print(get_blog_id('yyyyy330', '134612310'))
