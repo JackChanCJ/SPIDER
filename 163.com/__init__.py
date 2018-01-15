@@ -21,9 +21,11 @@ class wangyiboke:
     def __init__(self, username, id):
         self.username = username
         self.id = id
+        self.blogurl = 'http://api.blog.163.com/' + self.username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
+        self.photourl = 'http://' + self.username + '.blog.163.com/album/'
+
 
     def get_blog_html(self):
-        blogurl = 'http://api.blog.163.com/' + self.username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
             'Content-Type': 'text/plain',
@@ -43,12 +45,12 @@ class wangyiboke:
         paradict['c0-param0'] = "number:" + self.id
         paradict['c0-param1'] = "number:" + str(0)
         paradict['c0-param2'] = "number:" + str(20)
-        blogpost = requests.post(blogurl, headers=headers, data=paradict)
-        # print (blogpost.encoding)     'ISO-8859-1'
+        post = requests.post(self.blogurl, headers=headers, data=paradict)
+        # print (post.encoding)     'ISO-8859-1'
         # r.content 可以找到所用的编码格式，再用r.encoding设置编码值
         # 得到的格式为 ISO-8859-1，转换编码格式为 utf-8
-        blogpost.encoding = 'utf-8'
-        bloghtml = blogpost.text
+        post.encoding = 'utf-8'
+        bloghtml = post.text
         return bloghtml
 
     # 使用正则表达式来处理bloghmtl
@@ -58,14 +60,37 @@ class wangyiboke:
         [L.append(i) for i in batchID if i not in L]
         return L
 
+# Request URL:http://yyyyy330.blog.163.com/album/
+# Request Method:GET
+# Status Code:200 OK
+# Remote Address:61.164.158.2:80
     def get_photo_html(self):
+        headers = {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, sdch',
+            'Accept-Language': 'zh-CN,zh;q=0.8',
+            'Connection': 'keep-alive',
+            'Host': 'yyyyy330.blog.163.com',
+            'Referer': 'http://yyyyy330.blog.163.com/blog',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
+        }
+        get = requests.get(self.photourl, headers= headers)
+        # print (get.encoding)  'GBK'
+        # 得到的格式为 GBK，转换编码格式为 utf-8
+        # get.encoding = 'utf-8'
+        # 但是不需要转换
+        photohtml = get.text
+        print (photohtml)
+        return photohtml
 
-        return
 
 
 def main():
     B = wangyiboke('yyyyy330', '134612310')
-    B.re_blog_html()
+    print (B.blogurl)
+    print (B.photourl)
+    B.get_photo_html()
 
     pass
 
