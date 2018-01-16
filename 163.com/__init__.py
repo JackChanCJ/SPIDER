@@ -22,7 +22,7 @@ class wangyiboke:
         self.username = username
         self.id = id
         self.blogurl = 'http://api.blog.163.com/' + self.username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
-        self.photourl = 'http://' + self.username + '.blog.163.com/album/'
+        self.albumurl = 'http://' + self.username + '.blog.163.com/album/'
 
 
     def get_blog_html(self):
@@ -60,39 +60,13 @@ class wangyiboke:
         [L.append(i) for i in batchID if i not in L]
         return L
 
-# Request URL:http://yyyyy330.blog.163.com/album/
-# Request Method:GET
-# Status Code:200 OK
-# Remote Address:61.164.158.2:80
-    def get_photo_html(self):
-        headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Encoding': 'gzip, deflate, sdch',
-            'Accept-Language': 'zh-CN,zh;q=0.8',
-            'Connection': 'keep-alive',
-            'Host': 'yyyyy330.blog.163.com',
-            'Referer': 'http://yyyyy330.blog.163.com/blog',
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
-        }
-        get = requests.get(self.photourl, headers= headers)
-        # print (get.encoding)  'GBK'
-        # 得到的格式为 GBK，转换编码格式为 utf-8
-        # get.encoding = 'utf-8'
-        # 但是不需要转换
-        photohtml = get.text
-        print (photohtml)
-        return photohtml
 
 
 
 def main():
-    B = wangyiboke('yyyyy330', '134612310')
-    print (B.blogurl)
-    print (B.photourl)
-    B.get_photo_html()
+    # B = wangyiboke('yyyyy330', '134612310')
+    print(B.url)
 
-    pass
 
 if __name__ == '__main__':
     main()

@@ -32,10 +32,10 @@ secret_code = 'hadkfalifexxIxxfasdjifja134xxlovexx23345sdfxxyouxx8dfse'
 # print c
 
 # 使用括号与不使用括号的差别
-# d = re.findall('xx(.*?)xx',secret_code)
-# print d
-# for each in d:
-#     print each
+d = re.findall('xx(.*?)xx', secret_code)
+print(d)
+for each in d:
+    print(each)
 
 # s = '''sdfxxhello
 # xxfsdfxxworldxxasdf'''
