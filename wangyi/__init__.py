@@ -23,7 +23,6 @@ class wangyiboke:
         self.username = username
         self.id = id
         self.blogurl = 'http://api.blog.163.com/' + self.username + '/dwr/call/plaincall/BlogBeanNew.getBlogs.dwr'
-        self.albumurl = 'http://' + self.username + '.blog.163.com/album/'
 
     def get_blog_html(self):
         headers = {
@@ -62,8 +61,7 @@ class wangyiboke:
 
 
 def main():
-    # B = wangyiboke('yyyyy330', '134612310')
-    print(B.url)
+    B = wangyiboke('yyyyy330', '134612310')
 
 
 if __name__ == '__main__':
