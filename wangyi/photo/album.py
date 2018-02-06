@@ -38,7 +38,7 @@ class album(wangyiboke):
         return self.url
 
     def get_album_url(self):
-
+        self.get_album_id()
         # print (get.encoding)  'GBK'
         # 得到的格式为 GBK，转换编码格式为 utf-8
         # get.encoding = 'utf-8'
@@ -54,8 +54,8 @@ class album(wangyiboke):
             # print (i, id.index(i) + 1)
             album_url = 'http://%s.blog.163.com/album/#m=1&aid=%s&p=1' % (self.username, i)
             self.album_url.append(album_url)
-        print("相册url的长度：%s" % len(self.album_url))
-        print(self.album_url)
+        # print("相册url的长度：%s" % len(self.album_url))
+        # print(self.album_url)
 
         # idname = dict(zip(id, name))
         # print (len(idname))
@@ -66,15 +66,15 @@ class album(wangyiboke):
     def get_album_id(self):
         # self.album_id 正则处理self.text，获取相册的id
         self.album_id = re.findall('\{id:(.*?),name', self.text)
-        print("相册id的个数：%s" % len(self.album_id))
-        print(self.album_id)
+        # print("相册id的个数：%s" % len(self.album_id))
+        # print(self.album_id)
         return self.album_id
 
     def get_album_name(self):
         # self.album_name 正则处理self.text，获取相册的name
         self.album_name = re.findall("name:'(.*?)'", self.text)
-        print("相册name的个数：%s" % len(self.album_name))
-        print(self.album_name)
+        # print("相册name的个数：%s" % len(self.album_name))
+        # print(self.album_name)
         return self.album_name
 
     def get_album_Ctime(self):
@@ -82,6 +82,8 @@ class album(wangyiboke):
         return
 
     def zip_album(self):
+        self.get_album_name()
+        self.get_album_url()
         self.zip_album = dict(zip(self.album_name, self.album_url))
         return self.zip_album
 
