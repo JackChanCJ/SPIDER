@@ -28,6 +28,6 @@ f.close()
 #sub实现翻页
 for i in range(2,total_page+1):
     new_link = re.sub('pageNum=\d+','pageNum=%d'%i,old_url,re.S)
-    print new_link
+    print (new_link)
 
 
