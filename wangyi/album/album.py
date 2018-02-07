@@ -1,7 +1,6 @@
 # coding=utf-8
 __author__ = 'JACK_CHAN'
 import re
-import json
 import requests
 from wangyi import wangyiboke
 
@@ -37,8 +36,15 @@ class album(wangyiboke):
     def __str__(self):
         return self.url
 
+    def get_album_aid(self):
+        # self.album_id 正则处理self.text，获取相册的id
+        self.album_aid = re.findall('\{id:(.*?),name', self.text)
+        # print("相册id的个数：%s" % len(self.album_id))
+        # print(self.album_id)
+        return self.album_aid
+
     def get_album_url(self):
-        self.get_album_id()
+        self.get_album_aid()
         # print (get.encoding)  'GBK'
         # 得到的格式为 GBK，转换编码格式为 utf-8
         # get.encoding = 'utf-8'
@@ -50,7 +56,7 @@ class album(wangyiboke):
 
         # 通过用户名，相册id，拼接相册url，self.album_url相册中所有的url
         self.album_url = []
-        for i in self.album_id:
+        for i in self.album_aid:
             # print (i, id.index(i) + 1)
             album_url = 'http://%s.blog.163.com/album/#m=1&aid=%s&p=1' % (self.username, i)
             self.album_url.append(album_url)
@@ -63,13 +69,6 @@ class album(wangyiboke):
 
         return self.album_url
 
-    def get_album_id(self):
-        # self.album_id 正则处理self.text，获取相册的id
-        self.album_id = re.findall('\{id:(.*?),name', self.text)
-        # print("相册id的个数：%s" % len(self.album_id))
-        # print(self.album_id)
-        return self.album_id
-
     def get_album_name(self):
         # self.album_name 正则处理self.text，获取相册的name
         self.album_name = re.findall("name:'(.*?)'", self.text)
@@ -77,33 +76,43 @@ class album(wangyiboke):
         # print(self.album_name)
         return self.album_name
 
-    def get_album_Ctime(self):
-
-        return
-
     def zip_album(self):
+        # 组成一个字典，key为相册名，value为相册链接
         self.get_album_name()
         self.get_album_url()
         self.zip_album = dict(zip(self.album_name, self.album_url))
         return self.zip_album
 
 
-    def get_total_pages(self):
-
-        return
 
 
 class child_album(album):
     def __init__(self, username, id):
         album.__init__(self, username, id)
 
-    def get_album_Ctime(self):
+    def __str__(self):
+        self.album_url = 'http://yyyyy330.blog.163.com/album/#m=1&aid=227512529&p=1'
+        referer = 'http://%s.blog.163.com/album' % self.username
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
+            'Content-Type': 'text/plain',
+            'Referer': referer
+        }
+        self.album_text = requests.get(self.album_url, headers=headers).text
+        return self.album_text
+
+    def get_child_album_Ctime(self):
+
         return
 
-    def get_album_name(self):
+    def get_child_album_name(self):
+
         return
 
-    def get_album_pic(self):
+    def get_child_album_pic(self):
+        return "abc"
+
+    def crrent_album_pid(self):
         return
 
 
@@ -122,12 +131,11 @@ class pic(child_album):
 
 def main():
     B = album('yyyyy330', '134612310')
-    print(B.zip_album())
-    # B.get_album_id()
-    # B.get_album_name()
-    # B.get_album_url()
+    print(B.get_album_aid())
     C = child_album('yyyyy330', '134612310')
-    print(C.url)
+    print(C)
+
+
 
 if __name__ == '__main__':
     main()
