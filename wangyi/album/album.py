@@ -38,7 +38,7 @@ class album(wangyiboke):
 
     def get_album_aid(self):
         # self.album_id 正则处理self.text，获取相册的id
-        self.album_aid = re.findall('\{id:(.*?),name', self.text)
+        self.album_aid = re.findall('\{id: (.*?),name', self.text)
         # print("相册id的个数：%s" % len(self.album_id))
         # print(self.album_id)
         return self.album_aid
@@ -68,6 +68,10 @@ class album(wangyiboke):
         # http://yyyyy330.blog.163.com/album/#m=1&aid=268809115&p=1
 
         return self.album_url
+
+    def get_album_purl(self):
+        self.album_purl = re.findall("purl: '(.*?)'", self.text)
+        return self.album_purl
 
     def get_album_name(self):
         # self.album_name 正则处理self.text，获取相册的name
@@ -101,6 +105,10 @@ class child_album(album):
         self.album_text = requests.get(self.album_url, headers=headers).text
         return self.album_text
 
+    def child_album_url(self):
+        self.pid = re.findall('cvid: (.*?)', self.text)
+        return self.pid
+
     def get_child_album_Ctime(self):
 
         return
@@ -112,8 +120,6 @@ class child_album(album):
     def get_child_album_pic(self):
         return "abc"
 
-    def crrent_album_pid(self):
-        return
 
 
 class pic(child_album):
@@ -131,9 +137,12 @@ class pic(child_album):
 
 def main():
     B = album('yyyyy330', '134612310')
-    print(B.get_album_aid())
+    print(B.text)
+
+
+
     C = child_album('yyyyy330', '134612310')
-    print(C)
+    # print(C)
 
 
 

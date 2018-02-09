@@ -36,7 +36,7 @@ class wangyiboke:
             'c0-scriptName': 'BlogBeanNew',
             'c0-methodName': 'getBlogs',
             'c0-id': '0',
-            'c0-param0': '134612310',
+            'c0-param0': self.id,
             'c0-param1': '0',
             'c0-param2': '20',
             'batchId': '1'
