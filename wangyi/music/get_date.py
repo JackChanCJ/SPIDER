@@ -6,7 +6,7 @@ import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-url = 'http://music.163.com/#/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=0'
+url = 'http://music.163.com/#/discover/playlist/?order=hot&cat=%E5%85%A8%E9%83%A8&limit=35&offset=1'
 # 设置谷歌浏览器的无头模式
 chrome_options = Options()
 chrome_options.add_argument("--headless")
